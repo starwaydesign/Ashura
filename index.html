@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Blade - 8-Bit Cyberpunk</title>
+    <!-- Font 8-bit dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* ================= RESET & DASAR ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050510;
+            font-family: 'Press Start 2P', cursive;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ================= BACKGROUND CYBERPUNK ================= */
+        .game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                #0a001a 0%, 
+                #1a0033 40%, 
+                #2a004d 70%, 
+                #0d001a 100%);
+            overflow: hidden;
+        }
+
+        /* Gambar Referensi Anda sebagai Background Blur (Opsional) */
+        /* Hapus komentar jika Anda ingin memasukkan gambar asli sebagai background */
+        /*
+        .bg-reference {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('gambar-anda.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(15px) brightness(0.3);
+            opacity: 0.6;
+            z-index: 0;
+        }
+        */
+
+        /* Grid Neon di lantai */
+        .cyber-grid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 255, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 255, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(400px) rotateX(65deg);
+            transform-origin: bottom;
+            animation: gridMove 2s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 50px; }
+        }
+
+        /* Kabut Asap Neon */
+        .fog {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: radial-gradient(ellipse at bottom, rgba(255, 0, 255, 0.3) 0%, transparent 70%);
+            z-index: 2;
+            animation: fogPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes fogPulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Partikel Neon */
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ff00ff;
+            box-shadow: 0 0 15px #ff00ff, 0 0 30px #ff00ff;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            z-index: 3;
+        }
+        .p1 { bottom: -10px; left: 15%; animation-duration: 4s; }
+        .p2 { bottom: -10px; left: 35%; animation-duration: 5s; animation-delay: 1s; background: #00ffff; box-shadow: 0 0 15px #00ffff; }
+        .p3 { bottom: -10px; left: 55%; animation-duration: 6s; animation-delay: 2s; }
+        .p4 { bottom: -10px; left: 75%; animation-duration: 4.5s; animation-delay: 0.5s; background: #00ffff; box-shadow: 0 0 15px #00ffff; }
+        .p5 { bottom: -10px; left: 90%; animation-duration: 5.5s; animation-delay: 1.5s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(0); opacity: 0; }
+        }
+
+        /* ================= KONTEN TEKS ================= */
+        .content {
+            position: absolute;
+            top: 20%;
+            left: 8%;
+            z-index: 10;
+            max-width: 500px;
+        }
+
+        .pixel-text {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 
+                4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000,
+                0 0 20px #ff00ff, 0 0 40px #ff00ff;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .pixel-subtext {
+            font-size: 0.9rem;
+            color: #e0e0ff;
+            text-shadow: 2px 2px 0 #000, 0 0 10px rgba(0, 255, 255, 0.8);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .pixel-btn {
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-family: 'Press Start 2P', cursive;
+            color: #fff;
+            background-color: #1a0033;
+            border: 4px solid #ff00ff;
+            box-shadow: 6px 6px 0 #000, 0 0 15px #ff00ff, inset 0 0 10px #ff00ff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pixel-btn:hover {
+            background-color: #ff00ff;
+            color: #000;
+            box-shadow: 6px 6px 0 #000, 0 0 30px #ff00ff, inset 0 0 10px #fff;
+        }
+
+        .pixel-btn:active {
+            box-shadow: 0px 0px 0 #000, 0 0 15px #ff00ff;
+            transform: translate(6px, 6px);
+        }
+
+        /* ================= KARAKTER (PIXEL ART DETAIL) ================= */
+        .character-container {
+            position: absolute;
+            bottom: 5%;
+            right: 8%;
+            z-index: 5;
+            animation: float 3s ease-in-out infinite;
+            /* Skala agar pas di layar */
+            transform: scale(1);
+        }
+
+        /* Representasi Pixel Art dari Gambar Referensi */
+        .hero-css {
+            width: 400px;
+            height: 500px;
+            position: relative;
+            image-rendering: pixelated;
+            /* Filter drop shadow untuk aura neon */
+            filter: drop-shadow(0 0 20px rgba(255, 0, 255, 0.6));
+        }
+
+        /* --- RAMBUT PUTIH --- */
+        .hair-base {
+            position: absolute;
+            top: 10px;
+            left: 90px;
+            width: 200px;
+            height: 120px;
+            background: #d0d0d0;
+            border: 4px solid #000;
+            border-radius: 50% 50% 20% 20%;
+            z-index: 4;
+            box-shadow: inset -10px -10px 0 #999; /* Bayangan pixel */
+        }
+        /* Poni Rambut */
+        .hair-bangs {
+            position: absolute;
+            top: 60px;
+            left: 100px;
+            width: 180px;
+            height: 80px;
+            background: #d0d0d0;
+            border: 4px solid #000;
+            clip-path: polygon(0 0, 100% 0, 80% 100%, 50% 70%, 20% 100%);
+            z-index: 5;
+        }
+
+        /* --- WAJAH --- */
+        .face {
+            position: absolute;
+            top: 90px;
+            left: 110px;
+            width: 160px;
+            height: 130px;
+            background: #ffccaa;
+            border: 4px solid #000;
+            z-index: 3;
+            border-radius: 10px 10px 30px 30px;
+        }
+        
+        /* Mata Merah Menyala */
+        .eye {
+            position: absolute;
+            top: 40px;
+            width: 35px;
+            height: 15px;
+            background: #ff0000;
+            box-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+            animation: eyeGlow 1s ease-in-out infinite alternate;
+        }
+        .eye-left { left: 20px; }
+        .eye-right { right: 20px; }
+        
+        /* Tanda di Dahi */
+        .forehead-mark {
+            position: absolute;
+            top: 15px;
+            left: 70px;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ff00ff;
+            transform: rotate(45deg);
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* Mulut / Ekspresi */
+        .mouth {
+            position: absolute;
+            bottom: 25px;
+            left: 65px;
+            width: 30px;
+            height: 5px;
+            background: #000;
+        }
+
+        /* --- BADAN & ARMOR --- */
+        .torso {
+            position: absolute;
+            top: 210px;
+            left: 90px;
+            width: 200px;
+            height: 180px;
+            background: #1a1a2e;
+            border: 5px solid #000;
+            z-index: 2;
+            border-radius: 10px;
+        }
+        /* Otot Dada */
+        .chest {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            width: 150px;
+            height: 70px;
+            background: #2a2a4e;
+            border-bottom: 3px solid #000;
+        }
+        
+        /* Kristal Ungu Dada */
+        .crystal {
+            position: absolute;
+            top: 30px;
+            left: 85px;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            transform: rotate(45deg);
+            box-shadow: 0 0 25px #ff00ff;
+            z-index: 3;
+        }
+
+        /* Armor Bahu (Spiky) */
+        .shoulder {
+            position: absolute;
+            top: 200px;
+            width: 80px;
+            height: 100px;
+            background: #444;
+            border: 4px solid #000;
+            z-index: 3;
+            clip-path: polygon(50% 0%, 100% 40%, 100% 100%, 0% 100%, 0% 40%);
+        }
+        .shoulder-left { left: 40px; }
+        .shoulder-right { right: 40px; }
+
+        /* Lengan dengan Kain */
+        .arm {
+            position: absolute;
+            top: 250px;
+            width: 50px;
+            height: 120px;
+            background: #0a0a1a;
+            border: 4px solid #000;
+            z-index: 2;
+        }
+        .arm-left { left: 60px; transform: rotate(10deg); }
+        .arm-right { right: 60px; transform: rotate(-10deg); }
+
+        /* Kain/Cape Merah Gelap di Bawah */
+        .cape {
+            position: absolute;
+            bottom: 0;
+            left: 70px;
+            width: 240px;
+            height: 150px;
+            background: #2a0a0a;
+            border: 4px solid #000;
+            z-index: 1;
+            clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+        }
+
+        /* --- PEDANG NEON UNGU RAKSASA --- */
+        .sword-container {
+            position: absolute;
+            top: 250px;
+            left: -60px;
+            width: 550px;
+            height: 60px;
+            transform: rotate(-20deg);
+            z-index: 6; /* Di depan karakter */
+        }
+
+        /* Bilah Pedang */
+        .blade {
+            position: absolute;
+            top: 0;
+            left: 60px;
+            width: 450px;
+            height: 40px;
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 0 20px 20px 0;
+            box-shadow: 
+                0 0 20px #ff00ff, 
+                0 0 50px #ff00ff, 
+                0 0 100px #ff00ff,
+                inset 0 0 20px #ff00ff;
+        }
+
+        /* Energi Ungu di Bilah */
+        .blade-energy {
+            position: absolute;
+            top: 8px;
+            left: 100px;
+            width: 380px;
+            height: 20px;
+            background: #ff00ff;
+            box-shadow: 0 0 30px #ff00ff, 0 0 60px #ff00ff;
+        }
+
+        /* Ujung Pedang (Lengkung) */
+        .blade-tip {
+            position: absolute;
+            top: -10px;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #ff00ff;
+        }
+
+        /* Gagang Pedang */
+        .hilt {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 70px;
+            height: 20px;
+            background: #222;
+            border: 3px solid #000;
+            border-radius: 5px;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+        /* Permata di Gagang */
+        .hilt-gem {
+            position: absolute;
+            top: 5px;
+            left: 20px;
+            width: 10px;
+            height: 10px;
+            background: #ff00ff;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+
+        /* Animasi Mengambang */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Animasi Mata */
+        @keyframes eyeGlow {
+            0% { box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
+            100% { box-shadow: 0 0 25px #ff0000, 0 0 50px #ff0000; }
+        }
+
+        /* ================= EFEK SHAKE ================= */
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        /* Responsive untuk HP */
+        @media (max-width: 768px) {
+            .pixel-text { font-size: 1.8rem; }
+            .content { top: 10%; left: 5%; right: 5%; text-align: center; }
+            .character-container { right: 50%; transform: translateX(50%) scale(0.7); bottom: 0%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container" id="gameContainer">
+        <!-- OPSIONAL: Background gambar asli Anda -->
+        <!-- <div class="bg-reference"></div> -->
+
+        <!-- Efek Latar Cyberpunk -->
+        <div class="cyber-grid"></div>
+        <div class="fog"></div>
+        
+        <!-- Partikel Neon -->
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
+
+        <!-- Konten Teks -->
+        <div class="content">
+            <h1 class="pixel-text">RASAKAN<br>AMARAHKU</h1>
+            <p class="pixel-subtext">Dunia telah berubah.<br>Hanya yang terkuat yang bertahan.<br>Apakah kamu target selanjutnya?
+</p>
+            <button class="pixel-btn" id="startBtn">Ashura!
+</button>
+        </div>
+
+        <!-- Karakter Utama (Rekonstruksi CSS Pixel Art) -->
+        <div class="character-container">
+            
+            <div class="hero-css">
+                <!-- Pedang (Di belakang/bawah sebagian) -->
+                <div class="sword-container">
+                    <div class="hilt">
+                        <div class="hilt-gem"></div>
+                    </div>
+                    <div class="blade">
+                        <div class="blade-energy"></div>
+                        <div class="blade-tip"></div>
+                    </div>
+                </div>
+
+                <!-- Karakter -->
+                <div class="hair-base"></div>
+                <div class="hair-bangs"></div>
+                
+                <div class="face">
+                    <div class="eye eye-left"></div>
+                    <div class="eye eye-right"></div>
+                    <div class="forehead-mark"></div>
+                    <div class="mouth"></div>
+                </div>
+
+                <div class="cape"></div>
+                <div class="torso">
+                    <div class="chest"></div>
+                    <div class="crystal"></div>
+                </div>
+
+                <div class="arm arm-left"></div>
+                <div class="arm arm-right"></div>
+
+                <div class="shoulder shoulder-left"></div>
+                <div class="shoulder shoulder-right"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const container = document.getElementById('gameContainer');
+
+        startBtn.addEventListener('click', () => {
+            container.classList.add('shake');
+            setTimeout(() => { container.classList.remove('shake'); }, 500);
+            startBtn.innerText = "INITIALIZING...";
+            
+            setTimeout(() => {
+                alert("SAVAGE!");
+                startBtn.innerText = "Ashura!";
+            }, 1500);
+        });
+
+        // Suara beep 8-bit (Cyberpunk Agresif)
+        function playBeep() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+            
+            const ctx = new AudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc.type = 'sawtooth'; 
+            osc.frequency.setValueAtTime(100, ctx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.15);
+            
+            gain.gain.setValueAtTime(0.15, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+            
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.start();
+            osc.stop(ctx.currentTime + 0.15);
+        }
+
+        startBtn.addEventListener('click', playBeep);
+    </script>
+</body>
+</html>
